@@ -164,7 +164,7 @@ if (isset($_POST["btnSubmit"])) {
 //     
   //      $primaryKey = ""; 
   //      $dataEntered = false; 
-         
+      /*   
         try { 
   //          $db->beginTransaction(); 
 
@@ -189,7 +189,7 @@ if (isset($_POST["btnSubmit"])) {
             if ($debug) print "Error!: " . $e->getMessage() . "</br>"; 
             $errorMsg[] = "There was a problem accepting your, data please contact us directly."; 
         } 
-
+*/
 /*
             //################################################################# 
             // 
