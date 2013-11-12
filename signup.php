@@ -1,4 +1,3 @@
-<?php include "top.php" ?>
 <?php 
 /* the purpose of this page is to display a form to allow a person to register 
  * the form will be sticky meaning if there is a mistake the data previously  
@@ -36,7 +35,7 @@
 // Initialize variables 
 //   
 
-$debug = true; 
+$debug = false; 
 if ($debug) print "<p>DEBUG MODE IS ON</p>"; 
 
 $baseURL = "http://www.uvm.edu/~blkaufma/"; 
@@ -212,8 +211,8 @@ if (isset($_POST["btnSubmit"])) {
             // 
              
             $subject = "Your dinner has been planned"; 
-            include_once('mailmessage.php'); 
-            $mailed = sendMail($email, $subject, $messageA . $messageB . $messageC); 
+              include_once('mailmessage.php'); 
+              $mailed = sendMail($email, $subject, $messageA . $messageB . $messageC); 
         } //data entered    
       } // no errors  
 	 // ends if form was submitted.  
@@ -222,7 +221,7 @@ if (isset($_POST["btnSubmit"])) {
     $ext = pathinfo(basename($_SERVER['PHP_SELF'])); 
     $file_name = basename($_SERVER['PHP_SELF'], '.' . $ext['extension']); 
 
-    print '<body id="' . $file_name . '">'; 
+ //   print '<body id="' . $file_name . '">'; 
 
     ?> 
 
@@ -238,9 +237,10 @@ if (isset($_POST["btnSubmit"])) {
         if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { 
             print "<h2>Your Request has "; 
 
-            if (!$mailed) { 
+          if (!$mailed) { 
                 echo "not "; 
             } 
+            
 
             echo "been processed</h2>"; 
 
@@ -280,7 +280,7 @@ if (isset($_POST["btnSubmit"])) {
                   action="signup.php" 
                   method="post" 
                   name="signup_form">
-                  
+<!--                  
                   <title>Sign Up</title>
 
     <fieldset>
@@ -311,7 +311,43 @@ if (isset($_POST["btnSubmit"])) {
         </ul>
     </fieldset>
 </form>
-<?php } //end body sumbit
+-->
+<div class="container">      
+				<a class="btn btn-primary navbar-btn btn-sm" data-toggle="modal" data-target="#signupmodal" id="signup-btn">Sign Up!</a>    
+<div class="modal fade" id="signupmodal"><!-- Sign Up Modal -->
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="signupmodal-close">&times;</button>
+						<h4 class="modal-title">Sign Up</h4>
+                        <div id="warnings" class="alert" style="margin-bottom:0;"></div>
+					</div>
+					<div class="modal-body">
+			<form action="<? print $_SERVER['PHP_SELF']; ?>" 
+                  enctype="multipart/form-data" 
+                  method="post" 
+                  id="signup_form"
+                  class="signup_form" 
+                  action="signup.php" 
+                  method="post" 
+                  name="signup_form">
+               				<input id="username" name="username" type="text" maxlength="255" class="form-control element text medium<?php if ($usernameERROR) echo ' mistake'; ?>" value="<?php echo $username; ?>" placeholder="Username" required tabindex="20">
+							<input id="password" name="password" type="text" maxlength="255" class="form-control element text medium<?php if ($passwordERROR) echo ' mistake'; ?>" value="<?php echo $password; ?>" placeholder="Password" required tabindex="21">
+							<input id="email"    name="email" type="email" maxlength="255" class="form-control element text medium<?php if ($emailERROR) echo ' mistake'; ?>" value="<?php echo $email; ?>" placeholder="Email" required tabindex="24">
+							<div style="text-align:center;">
+								<button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-primary text-center login-btn" style="top:50%;" data-open="close">Sign Up</button>
+							</div>
+						</form>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- End Signup Modal -->
+<?php } //end body submit
 ?>
+
 </body>
+
 </html>
+
+
+		
