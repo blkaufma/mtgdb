@@ -1,10 +1,10 @@
+<?php include "top.php" ?>
 <?php
- require("dbconnect.php");
  if(empty($_SESSION['user'])){
 	 header("Location: home.php");
 	 die();
  }//end if
-?><?php include "top.php" ?>
+?>
 		<!--Body-->
         <div class="row" style="width:100%">
         	<div class="container">      
