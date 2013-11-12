@@ -8,21 +8,17 @@ include("/usr/local/uvm-inc/blkaufma.inc");
 $databaseName="BLKAUFMA_Magic";        
 $dsn = 'mysql:host=webdb.uvm.edu;dbname=';
 
-
 function dbConnect($databaseName){
     global $db, $dsn, $db_A_username, $db_A_password;
 
     if (!$db) $db = new PDO($dsn . $databaseName, $db_A_username, $db_A_password); 
         if (!$db) {
- 				 echo '<p>You are not connected to the database!!!!!!</p>';
+ 				 echo '<p>You are not connected to the database!</p>';
           return 0;
         } else {
           return $db;
         }
 } 
-
-
-
 
 // create the PDO object
 try {     
