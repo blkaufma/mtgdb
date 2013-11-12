@@ -93,7 +93,7 @@ if (isset($_POST["btnSubmit"])) {
         print "<p>Your: " . $yourURL; 
 
     if ($fromPage != $yourURL) { 
-        die("<p>Sorry you cannot access this page. Security breach detected and reported.</p>"); 
+// die("<p>Sorry you cannot access this page. Security breach detected and reported.</p>"); 
     } 
 
 
@@ -114,6 +114,8 @@ if (isset($_POST["btnSubmit"])) {
 //############################################################################# 
 //  
 // Check for mistakes using validation functions 
+    include ("validation_functions.php"); 
+
 // 
 // create array to hold mistakes 
 //  
@@ -149,7 +151,7 @@ if (isset($_POST["btnSubmit"])) {
         $rarityERROR = true; 
     } 
          
- }   
+    
 //############################################################################ 
 //  
 // Processing the Data of the form 
@@ -164,13 +166,12 @@ if (isset($_POST["btnSubmit"])) {
 //     
   //      $primaryKey = ""; 
   //      $dataEntered = false; 
-      /*   
+        
         try { 
-  //          $db->beginTransaction(); 
+            $db->beginTransaction(); 
 
   						  // Will this work? //
- 			//$sql = 'INSERT INTO Cards SET name="' . $cardname . '", type="' . $CardType . '", color="'. $color . '", cost="'. $Cost . '", rarity="'. $rarity . '", abilities="'. $ability . '", count="'. $count . '", power="'. $power . '", toughness="'. $toughness . '"';
- 			$sql = 'INSERT INTO Cards (name, type, color, cost, rarity, abilities, count, power, toughness) values ($cardname, $CardType, $color, $Cost, $rarity, $ability, $count, $power, $toughness)';
+ 			$sql = 'INSERT INTO Cards SET name="' . $cardname . '", type="' . $CardType . '", color="'. $color . '", cost="'. $Cost . '", rarity="'. $rarity . '", abilities="'. $ability . '", count="'. $count . '", power="'. $power . '", toughness="'. $toughness . '"';
 
 			//sql, prepare, insert, execute, last insert		
             $stmt = $db->prepare($sql); 
@@ -179,7 +180,7 @@ if (isset($_POST["btnSubmit"])) {
             $stmt->execute(); 
              
             $primaryKey = $db->lastInsertId(); 
-  //          if ($debug) print "<p>pk= " . $primaryKey; 
+  			// if ($debug) print "<p>pk= " . $primaryKey; 
             
             // all sql statements are done so lets commit to our changes 
            $dataEntered = $db->commit(); 
@@ -189,8 +190,8 @@ if (isset($_POST["btnSubmit"])) {
             if ($debug) print "Error!: " . $e->getMessage() . "</br>"; 
             $errorMsg[] = "There was a problem accepting your, data please contact us directly."; 
         } 
-*/
-/*
+
+
             //################################################################# 
             // 
             //Put forms information into a variable to print on the screen 
@@ -203,13 +204,14 @@ if (isset($_POST["btnSubmit"])) {
             $messageB .= "<p>or copy and paste this url into a web browser: "; 
             $messageB .= $baseURL . $folderPath  . 'confirmation.php?q=' . $key1 . '&amp;w=' . $key2 . "</p>"; 
 
-            $messageC .= "<p><b>First Name:</b><i>   " . $FirstName . "</i></p>"; 
-            $messageC .= "<p><b>Last Name:</b><i>   " . $LastName . "</i></p>"; 
-            $messageC .= "<p><b>Email Address:</b><i>   " . $email . "</i></p>"; 
-            $messageC .= "<p><b>Cook Count:</b><i>   " . $cookCount . "</i></p>"; 
-            $messageC .= "<p><b>Date:</b><i>   " . $Date . "</i></p>"; 
-            $messageC .= "<p><b>Meal:</b><i>   " . $meal . "</i></p>"; 
-            $messageC .= "<p><b>Ingredients:</b><i>   " . $ingredients . "</i></p>"; 
+            $messageC .= "<p><b>You entered the following card:</b><i>   " . $cardname . "</i></p>"; 
+            $messageC .= "<p>Card Type:</b><i>   " . $CardType . "</i></p>"; 
+            $messageC .= "<p>Color:</b><i>   " . $color . "</i></p>"; 
+            $messageC .= "<p>Cost:</b><i>   " . $Cost . "</i></p>"; 
+            $messageC .= "<p>Rarity:</b><i>   " . $rarity . "</i></p>"; 
+            $messageC .= "<p>Ability:</b><i>   " . $ability . "</i></p>"; 
+            $messageC .= "<p>Power:</b><i>   " . $power . "</i></p>"; 
+            $messageC .= "<p>Toughness:</b><i>   " . $toughness . "</i></p>"; 
 
 
 
@@ -218,12 +220,12 @@ if (isset($_POST["btnSubmit"])) {
             // email the form's information 
             // 
              
-            $subject = "Your dinner has been planned"; 
-            include_once('mailmessage.php'); 
-            $mailed = sendMail($email, $subject, $messageA . $messageB . $messageC); 
-        } //data entered    */
-    } // no errors  
-// ends if form was submitted.  
+            $subject = "Your card has been added."; 
+          //  include_once('mailmessage.php'); 
+          //  $mailed = sendMail($email, $subject, $messageA . $messageB . $messageC); 
+        } //data entered    
+       // no errors  
+   }// ends if form was submitted.  
 
 
     $ext = pathinfo(basename($_SERVER['PHP_SELF'])); 
@@ -236,7 +238,7 @@ if (isset($_POST["btnSubmit"])) {
     <section id="main"> 
       
 
-        <? 
+<?
 //############################################################################ 
 // 
 //  In this block  display the information that was submitted and do not  
@@ -287,7 +289,7 @@ if (isset($_POST["btnSubmit"])) {
                   action="addCard.php" 
                   method="post" 
                   name="addCard_form">
-                  <title>Menu Planner</title>
+                  <title>Add Cards</title>
 
     <fieldset>
         <legend>Enter the card's information below: </legend>
@@ -297,7 +299,7 @@ if (isset($_POST["btnSubmit"])) {
             </li>
             <li>
                 <label id="cardname">Card Name:</label>
-                <input id="cardname" name="carname" type="text" maxlength="255" class="element text medium<?php if ($cardnameERROR) echo ' mistake'; ?>" value="<?php echo $cardname; ?>" placeholder="Kraj" required tabindex="28">
+                <input id="cardname" name="cardname" type="text" maxlength="255" class="element text medium<?php if ($cardnameERROR) echo ' mistake'; ?>" value="<?php echo $cardname; ?>" placeholder="Kraj" required tabindex="28">
             	<span class="form_hint">Correct Format: "Zur, the Enchanter"</span>
             </li>
             <li>
@@ -361,7 +363,6 @@ if (isset($_POST["btnSubmit"])) {
        		 <li>
                 <label id="count">Count</label>
                 <input id="count" name="count" type="text" maxlength="5" class="element text medium<?php if ($countERROR) echo ' mistake'; ?>" value="<?php echo $count; ?>" placeholder="0"  tabindex="110">
-				
             </li>
         	<li>
                 <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit Card!" class="btn btn-success" tabindex="69"> 
