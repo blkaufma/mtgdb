@@ -1,4 +1,5 @@
 <?php include "top.php" ?>
+
 		<!--Body-->
         <div class="container">  
 			<!--Carousel Container-->
@@ -49,25 +50,7 @@
 				</div><!-- /.carousel -->   
 			</div>        
 		</div><!-- End Body -->
-		<div class="modal fade" id="loginmodal"><!-- Login Modal -->
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="loginmodal-close">&times;</button>
-						<h4 class="modal-title">Log In</h4>
-                        <div id="warnings" class="alert" style="margin-bottom:0;"></div>
-					</div>
-					<div class="modal-body">
-						<form id="login-form">
-							<input type="text" class="form-control" style="100px" placeholder="Username" id="username">
-							<input type="password" class="form-control" style="100px" placeholder="Password" id="password">
-							<div style="text-align:center;">
-								<button type="button" class="btn btn-primary text-center login-btn" style="top:50%;" id="login" data-open="close">Log In</button>
-							</div>
-						</form>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- End  Login Modal -->
+<?php include "signup.php" ?>
+<?php include "loginmodal.php" ?>
 	</body>
 </html>
