@@ -50,6 +50,7 @@ require_once("dbconnect.php");
 
 $username = "";
 $password = "";
+$password2 = "";
 $email = ""; 
 
 // $email = ""; 
@@ -59,6 +60,8 @@ $email = "";
 
 $usernameERROR = false;
 $passwordERROR = false;
+$password2ERROR = false;
+$passwordmatchERROR = false;
 $emailERROR = false;
 
 
@@ -96,6 +99,7 @@ if (isset($_POST["btnSubmit"])) {
 
     $username = htmlentities($_POST["username"], ENT_QUOTES, "UTF-8"); 
     $password = htmlentities($_POST["password"], ENT_QUOTES, "UTF-8"); 
+    $password2 = htmlentities($_POST["password2"], ENT_QUOTES, "UTF-8"); 
     $email = htmlentities($_POST["email"], ENT_QUOTES, "UTF-8"); 
     
 
@@ -103,7 +107,7 @@ if (isset($_POST["btnSubmit"])) {
 //############################################################################# 
 //  
 // Check for mistakes using validation functions 
-    include ("validation_functions.php"); 
+    require_once ("validation_functions.php"); 
 
 // 
 //  create array to hold mistakes 
@@ -128,11 +132,23 @@ if (isset($_POST["btnSubmit"])) {
         } 
     }
     
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^       Check password
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^       Check passwords
 
     if (empty($password)) { 
         $errorMsg[] = "Please choose password"; 
-        $CardTypeERROR = true; 
+        $passwordERROR = true; 
+    } 
+     
+      if (empty($password2)) { 
+        $errorMsg[] = "Please re-enter your password"; 
+        $password2ERROR = true; 
+    } 
+    
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^       Check passwords to match
+
+    if ($password != $password2) { 
+        $errorMsg[] = "Your passwords did not match."; 
+        $passwordmatchERROR = true; 
     } 
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^       Check email
 
@@ -313,7 +329,7 @@ if (isset($_POST["btnSubmit"])) {
 </form>
 -->
 <div class="container">      
-				<a class="btn btn-primary navbar-btn btn-sm" data-toggle="modal" data-target="#signupmodal" id="signup-btn">Sign Up!</a>    
+				<a class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#signupmodal" id="signup-btn">Sign Up!</a>    
 <div class="modal fade" id="signupmodal"><!-- Sign Up Modal -->
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -332,7 +348,8 @@ if (isset($_POST["btnSubmit"])) {
                   method="post" 
                   name="signup_form">
                				<input id="username" name="username" type="text" maxlength="255" class="form-control element text medium<?php if ($usernameERROR) echo ' mistake'; ?>" value="<?php echo $username; ?>" placeholder="Username" required tabindex="20">
-							<input id="password" name="password" type="text" maxlength="255" class="form-control element text medium<?php if ($passwordERROR) echo ' mistake'; ?>" value="<?php echo $password; ?>" placeholder="Password" required tabindex="21">
+							<input id="password" name="password" type="password" maxlength="255" class="form-control element text medium<?php if ($passwordERROR) echo ' mistake'; ?>" value="<?php echo $password; ?>" placeholder="Password" required tabindex="21">
+							<input id="password2" name="password2" type="password" maxlength="255" class="form-control element text medium<?php if ($password2ERROR) echo ' mistake'; ?>" value="<?php echo $password2; ?>" placeholder="Re-enter Password" required tabindex="21">
 							<input id="email"    name="email" type="email" maxlength="255" class="form-control element text medium<?php if ($emailERROR) echo ' mistake'; ?>" value="<?php echo $email; ?>" placeholder="Email" required tabindex="24">
 							<div style="text-align:center;">
 								<button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-primary text-center login-btn" style="top:50%;" data-open="close">Sign Up</button>
