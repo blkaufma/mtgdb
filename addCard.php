@@ -58,6 +58,7 @@ $ability = "";
 $power = "";
 $toughness = "";
 $count = "";
+$addToMyCards = "";
 
 // $email = ""; 
 //############################################################################# 
@@ -109,12 +110,13 @@ if (isset($_POST["btnSubmit"])) {
     $ability = htmlentities($_POST["ability"], ENT_QUOTES, "UTF-8"); 
     $power = htmlentities($_POST["power"], ENT_QUOTES, "UTF-8"); 
     $toughness = htmlentities($_POST["toughness"], ENT_QUOTES, "UTF-8"); 
+    $count = htmlentities($_POST["count"], ENT_QUOTES, "UTF-8"); 
 
 
 //############################################################################# 
 //  
 // Check for mistakes using validation functions 
-    include ("validation_functions.php"); 
+//    include ("validation_functions.php"); 
 
 // 
 // create array to hold mistakes 
@@ -170,7 +172,6 @@ if (isset($_POST["btnSubmit"])) {
         try { 
             $db->beginTransaction(); 
 
-  						  // Will this work? //
  			$sql = 'INSERT INTO Cards SET name="' . $cardname . '", type="' . $CardType . '", color="'. $color . '", cost="'. $Cost . '", rarity="'. $rarity . '", abilities="'. $ability . '", count="'. $count . '", power="'. $power . '", toughness="'. $toughness . '"';
 
 			//sql, prepare, insert, execute, last insert		
@@ -181,6 +182,26 @@ if (isset($_POST["btnSubmit"])) {
              
             $primaryKey = $db->lastInsertId(); 
   			// if ($debug) print "<p>pk= " . $primaryKey; 
+            				 
+            				 
+            				 
+            				  // Will this work? //
+            if ($addToMyCards = yes)
+            {
+ 			$sql = 'INSERT INTO UserCards SET UserID="' . $username . '", name="' . $cardname . '"';
+ 			
+			//sql, prepare, insert, execute, last insert		
+            $stmt = $db->prepare($sql); 
+            if ($debug) print "<p>sql ". $sql; 
+        
+            $stmt->execute(); 
+             
+            $primaryKey = $db->lastInsertId(); 
+            if ($debug) print "<p>pk= " . $primaryKey;
+            }
+            //finish addition here
+            
+            
             
             // all sql statements are done so lets commit to our changes 
            $dataEntered = $db->commit(); 
@@ -221,8 +242,8 @@ if (isset($_POST["btnSubmit"])) {
             // 
              
             $subject = "Your card has been added."; 
-          //  include_once('mailmessage.php'); 
-          //  $mailed = sendMail($email, $subject, $messageA . $messageB . $messageC); 
+          include_once('mailmessage.php'); 
+          $mailed = sendMail($email, $subject, $messageA . $messageB . $messageC); 
         } //data entered    
        // no errors  
    }// ends if form was submitted.  
@@ -245,13 +266,13 @@ if (isset($_POST["btnSubmit"])) {
 //  display the form. 
 // 
         if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { 
-            print "<h2>Your Request has "; 
+            print "<h2>Your card has "; 
 
             if (!$mailed) { 
                 echo "not "; 
             } 
 
-            echo "been processed</h2>"; 
+            echo "been added to the database!</h2>"; 
 
             print "<p>A copy of this message has "; 
             if (!$mailed) { 
@@ -364,9 +385,13 @@ if (isset($_POST["btnSubmit"])) {
                 <label id="count">Count</label>
                 <input id="count" name="count" type="text" maxlength="5" class="element text medium<?php if ($countERROR) echo ' mistake'; ?>" value="<?php echo $count; ?>" placeholder="0"  tabindex="110">
             </li>
+            <li>
+                <label id="color">Add to My Cards?</label>
+                <input name="addToMyCards" value="yes" id="addToMyCards" type="checkbox" tabindex="160" >
+                <i>Yes</i>
         	<li>
-                <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit Card!" class="btn btn-success" tabindex="69"> 
-            	<input type="reset" id="butReset" name="butReset" value="Reset Form" class="btn btn-warning" onclick="reSetForm()" tabindex="70">         
+                <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit Card!" class="btn btn-success" tabindex="169"> 
+            	<input type="reset" id="butReset" name="butReset" value="Reset Form" class="btn btn-warning" onclick="reSetForm()" tabindex="170">         
             </li>
         </ul>
     </fieldset>
