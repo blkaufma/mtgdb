@@ -1,20 +1,30 @@
 <?php include "top.php" ?>
-<?php
- if(empty($_SESSION['user'])){
-	 header("Location: home.php");
-	 die();
- }//end if
-?>
 		<!--Body-->
         <div class="row" style="width:100%">
         	<div class="container">      
 				<a class="btn btn-primary navbar-btn btn-sm" data-toggle="modal" data-target="#addcardform" id="addcard-btn">Add a card!</a>    
+				        <div class="modal fade" id="addcardform"><!-- Add Card Modal -->
+        	<div class="modal-dialog">
+            	<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="loginmodal-close">&times;</button>
+					<h4 class="modal-title">Add a card to your database!</h4>
+					<div id="warnings" class="alert" style="margin-bottom:0;"></div>
+				</div>
+           		<div class="modal-body add-card-modal">
+					<?php include 'addCard.php' ?>
+				</div>
+                </div>
+            </div>
+        </div>
 				<table class="table table-striped table-hover table-bordered" id="dblist-table">
                 <thead>
 					<tr>
 						<th>Card Name</th>
 						<th>Card Type</th>
+						<th>Color</th>
 						<th>Number available</th>
+
 					</tr>
                 </thead>
                 	<tbody>
@@ -60,20 +70,44 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- End  Login Modal -->
-        <div class="modal fade" id="addcardform"><!-- Add Card Modal -->
-        	<div class="modal-dialog">
-            	<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="loginmodal-close">&times;</button>
-					<h4 class="modal-title">Add a card to the database!</h4>
-					<div id="warnings" class="alert" style="margin-bottom:0;"></div>
-				</div>
-           		<div class="modal-body add-card-modal">
-					<?php include 'addCard.php' ?>
-				</div>
-                </div>
-            </div>
-        </div>
+		
+		<a class="btn btn-primary navbar-btn btn-sm" data-toggle="modal" data-target="#ViewCardModal" id="ViewCardModal-btn">Look at a card!</a>    
+		<div class="modal fade" id="ViewCardModal"><!-- ViewCardModal -->
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="ViewCardModal-close">&times;</button>
+						<h4 class="modal-title">Name</h4>
+                        <div id="warnings" class="alert" style="margin-bottom:0;"></div>
+					</div>
+					<div class="modal-body span12">
+						<div class="cardFrame modal-content">
+						<img class="cardPicture" width="250" height="300"> 
+						</div>
+						<div id="allTypes" class="likeSection modal-content"> 
+							<div id="Type">Type:</div>
+							<div id="Supertype">Supertype:</div>
+							<div id="Subtype">Subtype:</div>
+						</div>
+						<div class="likeSection modal-content">
+							<div id="Color">Color:</div>
+							<div id="Cost">Cost:</div>
+							<div id="Rarity">Rarity:</div>
+							<div id="Ability">Ability:</div>
+						</div>
+						<div id="Stock" class="likeSection modal-content">
+							<div id="Count">Count:</div>
+							<div id="Available">Available:</div>
+							<div id="Used">Used:</div>
+						</div>
+						<div class="likeSection modal-content">
+							<div id="Power">Power:</div>
+							<div id="Toughness">Toughness:</div>
+						</div>
+						
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
 	</body>
 	<script>
 	var page = 1;
@@ -89,12 +123,18 @@
 				holder = "#".concat(holder);
 				$(holder).append("<td>"+data[i]['name']+"</td>");
 				$(holder).append("<td>"+data[i]['type']+"</td>");
-				$(holder).append("<td>"+data[i]['available']+"</td>");
+				$(holder).append("<td>"+data[i]['color']+"</td>");
+				$(holder).append("<td>"+data[i]['count']+"</td>");
 				$(holder).attr('data-id',data[i]['id']);
+				$(holder).on('click',cardLook);
 			}//end for
 		}//end success function
 	});//end happen
 	}
+	function cardLook(){
+		alert($(this).attr('data-id'));
+		
+	}//end cardLook
 		$(document).ready(function(e){
 			var pages = $.ajax({
 				type:'POST',
