@@ -105,7 +105,7 @@ if (isset($_POST["btnSubmit"])) {
     $cardname = htmlentities($_POST["cardname"], ENT_QUOTES, "UTF-8"); 
     $CardType = htmlentities($_POST["CardType"], ENT_QUOTES, "UTF-8"); 
     $color = htmlentities($_POST["color"], ENT_QUOTES, "UTF-8"); 
-    $Cost = htmlentities($_POST["Cost"], ENT_QUOTES, "UTF-8"); 
+    $Cost = htmlentities($_POST["cost"], ENT_QUOTES, "UTF-8"); 
     $rarity = htmlentities($_POST["rarity"], ENT_QUOTES, "UTF-8"); 
     $ability = htmlentities($_POST["ability"], ENT_QUOTES, "UTF-8"); 
     $power = htmlentities($_POST["power"], ENT_QUOTES, "UTF-8"); 
@@ -171,8 +171,31 @@ if (isset($_POST["btnSubmit"])) {
         
         try { 
             $db->beginTransaction(); 
+			if(isset($_POST["Green"])){
+				$color1 = "Green ";
+			}//end if
+			if(isset($_POST["Blue"])){
+				$color2 = "Blue ";
+			}//end if
+			if(isset($_POST["Red"])){
+				$color3 = "Red ";
+			}//end if
+			if(isset($_POST["White"])){
+				$color4 = "White ";
+			}//end if
+			if(isset($_POST["Black"])){
+				$color5 = "Black ";
+			}//end if
+			if(isset($_POST["Colorless"])){
+				$color6 = "Colorless ";
+			}//end if
+			$color = $color1 . $color2 . $color3 . $color4 . $color5 . $color6;
 
- 			$sql = 'INSERT INTO Cards SET name="' . $cardname . '", type="' . $CardType . '", color="'. $color . '", cost="'. $Cost . '", rarity="'. $rarity . '", abilities="'. $ability . '", count="'. $count . '", power="'. $power . '", toughness="'. $toughness . '"';
+			$tblname = "Cards";
+			$array = $_SESSION['user'];
+			$username = $array['name'];
+
+ 			$sql = 'INSERT INTO '.$tblname.' SET name="' . $cardname . '", type="' . $CardType . '", color="'. $color . '", cost="'. $Cost . '", rarity="'. $rarity . '", abilities="'. $ability . '", count="'. $count . '", power="'. $power . '", toughness="'. $toughness . '"';
 
 			//sql, prepare, insert, execute, last insert		
             $stmt = $db->prepare($sql); 
@@ -182,22 +205,20 @@ if (isset($_POST["btnSubmit"])) {
              
             $primaryKey = $db->lastInsertId(); 
   			// if ($debug) print "<p>pk= " . $primaryKey; 
-            				 
-            				 
+            				 			 
             				 
             				  // Will this work? //
-            if ($addToMyCards = yes)
-            {
- 			$sql = 'INSERT INTO UserCards SET UserID="' . $username . '", name="' . $cardname . '"';
- 			
+            if (isset($_POST["addToMyCards"])){
+			$tblname = "UserCards";
+			$sql2 = 'INSERT INTO '.$tblname.' SET name="' . $cardname . '", type="' . $CardType . '", color="'. $color . '", cost="'. $Cost . '", rarity="'. $rarity . '", abilities="'. $ability . '", count="'. $count . '", power="'. $power . '", toughness="'. $toughness . '", UserID = "'. $username . '"';		
 			//sql, prepare, insert, execute, last insert		
-            $stmt = $db->prepare($sql); 
-            if ($debug) print "<p>sql ". $sql; 
+            $stmt2 = $db->prepare($sql2); 
+            if ($debug) print "<p>sql ". $sql2; 
         
-            $stmt->execute(); 
+            $stmt2->execute(); 
              
-            $primaryKey = $db->lastInsertId(); 
-            if ($debug) print "<p>pk= " . $primaryKey;
+            //$primaryKey = $db->lastInsertId(); 
+            //if ($debug) print "<p>pk= " . $primaryKey;
             }
             //finish addition here
             
@@ -320,11 +341,11 @@ if (isset($_POST["btnSubmit"])) {
             </li>
             <li>
                 <label id="cardname">Card Name:</label>
-                <input id="cardname" name="cardname" type="text" maxlength="255" class="element text medium<?php if ($cardnameERROR) echo ' mistake'; ?>" value="<?php echo $cardname; ?>" placeholder="Kraj" required tabindex="28">
+                <input id="cardname" name="cardname" type="text" maxlength="255" class="element text medium<?php if ($cardnameERROR) echo ' mistake'; ?>" value="" placeholder="<?php echo $cardname; ?>" required tabindex="28">
             	<span class="form_hint">Correct Format: "Zur, the Enchanter"</span>
             </li>
             <li>
-            	<label id="CardType">Card Type</label>
+            	<label id="CardType">Card Type:</label>
            		<select name="CardType" required>
 					<option value="Enchantment">Enchantment</option>
 					<option value="Creature">Creature</option>
@@ -335,28 +356,67 @@ if (isset($_POST["btnSubmit"])) {
 				</select>
 			</li>
 			<li>
+			                <label id="color">Color(s):</label>
+				<div class="btn-group" data-toggle="buttons">
+ 					<label class="btn btn-success">
+                		<input  name="Green" value="Green" id="Green" type="checkbox" tabindex="60" > Green
+					</label>
+ 					<label class="btn btn-danger">
+                		<input  name="Red" value="Red" id="Red" type="checkbox"  tabindex="61" >Red
+					</label>
+					<label class="btn btn-info"">
+               			<input  name="Blue" value="Blue" id="Blue" type="checkbox"  tabindex="62" >Blue
+  					</label>
+  					<label class="btn btn-default">
+             		   <input name="White" value="White" id="White" type="checkbox"  tabindex="63" >White
+  					</label>
+  					<label class="btn btn-primary">
+        		        <input name="Black" value="Black" id="Black" type="checkbox"  tabindex="64" >Black 
+  					</label>
+  					<label class="btn btn-primary">
+            		    <input name="Colorless" value="Colorless" id="Colorless" type="checkbox" tabindex="65" >Colorless
+  					</label>
+				</div>
+			<!--
                 <label id="color">Color</label>
-                <input name="color" value="Green" id="Green" type="checkbox" tabindex="60" >
+                <input name="Green" value="Green" id="Green" type="checkbox" tabindex="60" >
                 <i>Green</i>
-                <input name="color" value="Red" id="Red" type="checkbox"  tabindex="61" >
+                <input name="Red" value="Red" id="Red" type="checkbox"  tabindex="61" >
                 <i>Red</i>
-                <input name="color" value="Blue" id="Blue" type="checkbox"  tabindex="62" >
+                <input name="Blue" value="Blue" id="Blue" type="checkbox"  tabindex="62" >
                 <i>Blue</i>
-                <input name="color" value="White" id="White" type="checkbox"  tabindex="63" >
+                <input name="White" value="White" id="White" type="checkbox"  tabindex="63" >
                 <i>White</i>
-                <input name="color" value="Black" id="Black" type="checkbox"  tabindex="64" >  
+                <input name="Black" value="Black" id="Black" type="checkbox"  tabindex="64" >  
                 <i>Black</i>    
-                <input name="color" value="Colorless" id="Colorless" type="checkbox" tabindex="65" >
-                <i>Colorless</i>
+                <input name="Colorless" value="Colorless" id="Colorless" type="checkbox" tabindex="65" >
+                <i>Colorless</i> -->
 
             </li>
             <li>
                 <label id="cost">Cost:</label>
-				<input id="cost" name="cost" type="txt" maxlength="70" class="element text medium<?php if ($costERROR) echo ' mistake'; ?>"  value="<?php echo $cost; ?>" placeholder="5B" onfocus="this.select()"  tabindex="80">                
+				<input id="Cost" name="cost" type="text" maxlength="70" class="element text medium<?php if ($CostERROR) echo ' mistake'; ?>"  value="" placeholder="5B" onfocus="this.select()"  tabindex="80">                
 				<span class="form_hint">Correct Format: "1WUB"</span>
             </li>
             <li>
-                <label id="rarity">Rarity</label>
+            
+            <div class="btn-group" data-toggle="buttons">
+            <label id="rarity">Rarity:</label>
+ 				 <label class="btn btn-primary btn-danger">
+                <input name="rarity" value="Mythic" id="Mythic" type="radio" required tabindex="84" >Mythic
+  				</label>
+  				<label class="btn btn-primary btn-warning">
+                <input name="rarity" value="Rare" id="Rare" type="radio" required tabindex="86" >Rare
+ 				 </label>
+				<label class="btn btn-primary">
+                <input name="rarity" value="Uncommon" id="Uncommon" type="radio" required tabindex="88" >Uncommon
+				</label>
+				<label class="btn btn-default">
+                <input name="rarity" value="Common" id="Common" type="radio" required tabindex="90" >Common
+				</label>
+			</div>
+            
+               <!-- <label id="rarity">Rarity</label>
                 <input name="rarity" value="Mythic" id="Mythic" type="radio" required tabindex="84" >
                 <i>Mythic</i>
                 <input name="rarity" value="Rare" id="Rare" type="radio" required tabindex="86" >
@@ -364,33 +424,33 @@ if (isset($_POST["btnSubmit"])) {
                 <input name="rarity" value="Uncommon" id="Uncommon" type="radio" required tabindex="88" >
                 <i>Uncommon</i>
                 <input name="rarity" value="Common" id="Common" type="radio" required tabindex="90" >
-                <i>Common</i>
+                <i>Common</i>-->
             </li>
 			 <li>
-                <label id="ability">Ability</label>
-                <textarea id="ability" name="ability" type="text" maxlength="480" class="element text medium<?php if ($abilityERROR) echo ' mistake'; ?>" value="<?php echo $ability; ?>" placeholder="Trample"  tabindex="100"></textarea>
+                <label id="ability">Ability:</label>
+                <textarea id="ability" name="ability" type="text" maxlength="480" class="element text medium<?php if ($abilityERROR) echo ' mistake'; ?>" value="" placeholder=""  tabindex="100"></textarea>
 				<span class="form_hint">Correct Format: "Flying, Lifelink, Trample, Haste"</span>
             </li>
             <li>
-                <label id="power">Power</label>
-                <input id="power" name="power" type="text" maxlength="480" class="element text medium<?php if ($powerERROR) echo ' mistake'; ?>" value="<?php echo $power; ?>" placeholder="7"  tabindex="102">
+                <label id="power">Power:</label>
+                <input id="power" name="power" type="text" maxlength="480" class="element text medium<?php if ($powerERROR) echo ' mistake'; ?>" value="" placeholder="2"  tabindex="102">
 				<span class="form_hint">Correct Format: "18"</span>
             </li>
         	<li>
-                <label id="toughness">Toughness</label>
-                <input id="toughness" name="toughness" type="text" maxlength="480" class="element text medium<?php if ($powerERROR) echo ' mistake'; ?>" value="<?php echo $power; ?>" placeholder="7"  tabindex="102">
+                <label id="toughness">Toughness:</label>
+                <input id="toughness" name="toughness" type="text" maxlength="480" class="element text medium<?php if ($powerERROR) echo ' mistake'; ?>" value="" placeholder="2"  tabindex="102">
 				<span class="form_hint">Correct Format: "18"</span>
             </li>    
        		 <li>
-                <label id="count">Count</label>
-                <input id="count" name="count" type="text" maxlength="5" class="element text medium<?php if ($countERROR) echo ' mistake'; ?>" value="<?php echo $count; ?>" placeholder="0"  tabindex="110">
+                <label id="count">Count:</label>
+                <input id="count" name="count" type="text" maxlength="5" class="element text medium<?php if ($countERROR) echo ' mistake'; ?>" value="" placeholder="0"  tabindex="110">
             </li>
             <li>
                 <label id="color">Add to My Cards?</label>
                 <input name="addToMyCards" value="yes" id="addToMyCards" type="checkbox" tabindex="160" >
                 <i>Yes</i>
         	<li>
-                <input type="submit" id="btnSubmit" name="btnSubmit" value="Submit Card!" class="btn btn-success" tabindex="169"> 
+                <input type="submit" id="" name="btnSubmit" value="Submit Card!" class="btn btn-success btnSubmit" tabindex="169"> 
             	<input type="reset" id="butReset" name="butReset" value="Reset Form" class="btn btn-warning" onclick="reSetForm()" tabindex="170">         
             </li>
         </ul>
