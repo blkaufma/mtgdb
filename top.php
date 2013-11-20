@@ -1,7 +1,5 @@
 <?php require("dbconnect.php"); ?>
-<!--
-<?php include "validation_functions.php"  ?>
--->
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -14,6 +12,8 @@
         <link rel="stylesheet" href="font-awesome/css/font-awesome.css">
 		<!--Custon Stylesheet-->
         <link rel="stylesheet" href="includes/common.css">
+        <?php include "loginmodal.php" ?>
+		<?php include "validation_functions.php" ?>
 	</head>
 	<body>
 		<!--JQuery-->
@@ -25,26 +25,32 @@
 		<!--Navbar-->
         <div class="navbar navbar-inverse navbar-static-top" style="margin-bottom:0;">
 			<div class="container text-center">
-				<div id="log-status" class="pull-right" data-log="false">
-				<? include 'buttonSwitch.php' ?>
+			<div>
+						<h3 class="navbar-header text-center">Magic Card Database</h3>
+					</div>
+				<div class="btn-group">
+					<div id="" class="pull-left" data-log="">
+						<? include 'signup.php' ?>
+					</div>
+					<div id="log-status" class="pull-right" data-log="false">
+						<? include 'buttonSwitch.php' ?>
+					</div>
 				</div>
-				
-                <div>
-					<h3 class="navbar-header text-center">Magic Card Database</h3>
-				</div>
+					
 			</div>
+		</div>
 		</div>
         <!--End Navbar-->
         <!--Row of Links-->
 		<div class="row" style="width:100%">
 			<div class="container">
 				<ul class="list-inline text-center" style="margin:0;">
-					<li class="barli"><a href="home.php" class="row-link">Home</a></li>
-					<li class="barli"><a href="dblist.php" class="row-link">Database Search</a></li>
-					<li class="barli"><a href="#" class="row-link">Trade</a></li>
-					<li class="barli"><a href="#" class="row-link">Deck Lists</a></li>
-					<li class="barli"><a href="#" class="row-link">Contact Us</a></li>
+					<li class="barli"><a href="home.php" class="row-link icon-home"> Home</a></li>
+					<li class="barli"><a href="dblist.php" class="row-link icon-search"> Database Search</a></li>
+					<li class="barli"><a href="myCards.php" class="row-link icon-folder-open"> My Cards</a></li>
+					<li class="barli"><a href="decks.php" class="row-link icon-briefcase"> Deck Lists</a></li>
+					<li class="barli"><a href="#" class="row-link icon-fire"> Contact Us</a></li>
 				</ul>
 			</div>
-		</div> 
+		</div>
         <!--End Row of Links-->
