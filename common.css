@@ -1,3 +1,48 @@
+.results  {
+	position:fixed;
+	top:330px;
+	color:green;
+	width:300px;
+	}
+
+.nav-wrap {  
+	border-top:    2px solid black; 
+	border-bottom: 2px solid black; 
+}
+.center-block {
+  display: block;
+  margin-left: 5%;
+  margin-right: auto;
+}
+
+.EditField {
+height:30px;
+width:auto;
+padding:none;
+margin:2px;
+
+}
+.EditField2 {
+height:60px;
+width:auto;
+padding:none;
+margin:2px;
+
+}
+
+.likeSection {
+	border: 1px solid #000;
+	margin:1%;
+	padding:1%;
+	width:40%;
+}
+
+.cardFrame {
+
+	float:right;
+	border: 1px solid #000;
+
+}
 .navbar-btn {
 	display: block;
 	max-width: 200px;
@@ -36,7 +81,7 @@
 	background-color: #3276b1;
 }
 .carousel-caption{
-	background-color:rgba(74,74,74,.2);
+	background-color:rgba(74,74,74,.4);
 }
 .carousel-input{
 	border: 1px solid #cccccc;
@@ -117,7 +162,7 @@ legend {border-bottom:0;}
 
 /* === Form Elements === */
   label {
-	width:150px;
+	/*width:150px;*/
 	margin-top: 3px;
 	display:inline-block;
 	float:left;
