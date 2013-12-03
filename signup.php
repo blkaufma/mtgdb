@@ -81,12 +81,12 @@ $messageC = "";
 //############################################################################# 
 // minor security check 
 
-if (isset($_POST["btnSubmit"])) { 
+if (isset($_POST["signupSubmit"])) { 
    // $fromPage = getenv("http_referer"); 
 
     if ($debug) 
         print "<p>From: " . $fromPage . " should match "; 
-        print "<p>Your: " . $yourURL; 
+     //   print "<p>Your: " . $yourURL; 
 
     if ($fromPage != $yourURL) { 
 //        die("<p>Sorry you cannot access this page. Security breach detected and reported.</p>"); 
@@ -200,7 +200,7 @@ if (isset($_POST["btnSubmit"])) {
         } catch (PDOExecption $e) { 
             $db->rollback(); 
             if ($debug) print "Error!: " . $e->getMessage() . "</br>"; 
-            $errorMsg[] = "There was a problem accepting your, data please contact us directly."; 
+            $errorMsg[] = "There was a problem accepting your data please contact us directly."; 
         } 
 
 
@@ -226,7 +226,7 @@ if (isset($_POST["btnSubmit"])) {
             // email the form's information 
             // 
              
-            $subject = "Your dinner has been planned"; 
+            $subject = "You have signed up for this magic database"; 
               include_once('mailmessage.php'); 
               $mailed = sendMail($email, $subject, $messageA . $messageB . $messageC); 
         } //data entered    
@@ -250,8 +250,8 @@ if (isset($_POST["btnSubmit"])) {
 //  In this block  display the information that was submitted and do not  
 //  display the form. 
 // 
-        if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { 
-            print "<h2>Your Request has "; 
+        if (isset($_POST["signupSubmit"]) AND empty($errorMsg)) { 
+            print "<div class='results'><h2>Your Request has "; 
 
           if (!$mailed) { 
                 echo "not "; 
@@ -266,7 +266,8 @@ if (isset($_POST["btnSubmit"])) {
             } 
             print "been sent to: " . $email . "</p>"; 
 
-            echo $messageA . $messageC; 
+            echo $messageA . $messageC;
+            print "</div>"; 
         } else { 
 
 
@@ -296,40 +297,10 @@ if (isset($_POST["btnSubmit"])) {
                   action="signup.php" 
                   method="post" 
                   name="signup_form">
-<!--                  
-                  <title>Sign Up</title>
 
-    <fieldset>
-        <legend>Enter your information below: </legend>
-        <ul>
-            <li>
-                <span class="required_notification">* Denotes Required Field</span>
-            </li>
-            <li>
-                <label id="username">User Name:</label>
-                <input id="username" name="username" type="text" maxlength="255" class="element text medium<?php if ($usernameERROR) echo ' mistake'; ?>" value="<?php echo $username; ?>" placeholder="Bob" required tabindex="20">
-            	<span class="form_hint">Correct Format: "Bob"</span>
-            </li>
-   			<li>
-                <label id="username">Password:</label>
-                <input id="username" name="password" type="password" maxlength="255" class="element text medium<?php if ($passwordERROR) echo ' mistake'; ?>" value="<?php echo $username; ?>" placeholder="Password" required tabindex="24">
-            	<span class="form_hint">Correct Format: "********"</span>
-            </li>
-              <li>
-                <label id="email">Email Address</label>
-                <input id="email" name="email" type="text" maxlength="255" class="element text medium<?php if ($emailERROR) echo ' mistake'; ?>" value="<?php echo $email; ?>" placeholder="Bob" required tabindex="29">
-            	<span class="form_hint">Correct Format: "rerickso@uvm.edu"</span>
-            </li>
-        	<li>
-                <input type="submit" id="btnSubmit" name="btnSubmit" value="Register!" class="btn btn-success" tabindex="69"> 
-            	<input type="reset" id="butReset" name="butReset" value="Reset Form" class="btn btn-warning" onclick="reSetForm()" tabindex="70">         
-            </li>
-        </ul>
-    </fieldset>
-</form>
--->
 <div class="container">      
-				<a class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#signupmodal" id="signup-btn">Sign Up!</a>    
+				<a class="btn btn-primary navbar-btn icon-ok-circle" data-toggle="modal" data-target="#signupmodal" id="signup-btn">   Sign Up!</a>    
+</div>
 <div class="modal fade" id="signupmodal"><!-- Sign Up Modal -->
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -347,12 +318,12 @@ if (isset($_POST["btnSubmit"])) {
                   action="signup.php" 
                   method="post" 
                   name="signup_form">
-               				<input id="username" name="username" type="text" maxlength="255" class="form-control element text medium<?php if ($usernameERROR) echo ' mistake'; ?>" value="<?php echo $username; ?>" placeholder="Username" required tabindex="20">
-							<input id="password" name="password" type="password" maxlength="255" class="form-control element text medium<?php if ($passwordERROR) echo ' mistake'; ?>" value="<?php echo $password; ?>" placeholder="Password" required tabindex="21">
-							<input id="password2" name="password2" type="password" maxlength="255" class="form-control element text medium<?php if ($password2ERROR) echo ' mistake'; ?>" value="<?php echo $password2; ?>" placeholder="Re-enter Password" required tabindex="21">
-							<input id="email"    name="email" type="email" maxlength="255" class="form-control element text medium<?php if ($emailERROR) echo ' mistake'; ?>" value="<?php echo $email; ?>" placeholder="Email" required tabindex="24">
+               				<input id="username" name="username" type="text" maxlength="255" class="form-control element text medium<?php if ($usernameERROR) echo ' mistake'; ?>" value="" placeholder="Username" required tabindex="20">
+							<input id="password" name="password" type="password" maxlength="255" class="form-control element text medium<?php if ($passwordERROR) echo ' mistake'; ?>" value="" placeholder="Password" required tabindex="21">
+							<input id="password2" name="password2" type="password" maxlength="255" class="form-control element text medium<?php if ($password2ERROR) echo ' mistake'; ?>" value="" placeholder="Re-enter Password" required tabindex="21">
+							<input id="email"    name="email" type="email" maxlength="255" class="form-control element text medium<?php if ($emailERROR) echo ' mistake'; ?>" value="" placeholder="Email" required tabindex="24">
 							<div style="text-align:center;">
-								<button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-primary text-center login-btn" style="top:50%;" data-open="close">Sign Up</button>
+								<button type="submit" id="signupSubmit" name="signupSubmit" class="btn btn-primary text-center login-btn btnSubmit icon-ok-circle" style="top:50%;" tabindex="26" data-open="close"> Sign Up</button>
 							</div>
 						</form>
 					</div>
