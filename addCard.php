@@ -47,8 +47,7 @@ require_once("dbconnect.php");
 
 //############################################################################# 
 // set all form variables to their default value on the form. for testing i set 
-// to my email address. you lose 10% on your grade if you forget to change it. 
-
+// to my email address. 
 $cardname = "";
 $CardType = "";
 $color = ""; 
@@ -116,7 +115,7 @@ if (isset($_POST["btnSubmit"])) {
 //############################################################################# 
 //  
 // Check for mistakes using validation functions 
-//    include ("validation_functions.php"); 
+ require_once ("validation_functions.php"); 
 
 // 
 // create array to hold mistakes 
@@ -207,7 +206,7 @@ if (isset($_POST["btnSubmit"])) {
   			// if ($debug) print "<p>pk= " . $primaryKey; 
             				 			 
             				 
-            				  // Will this work? //
+            //adding to mycards
             if (isset($_POST["addToMyCards"])){
 			$tblname = "UserCards";
 			$sql2 = 'INSERT INTO '.$tblname.' SET name="' . $cardname . '", type="' . $CardType . '", color="'. $color . '", cost="'. $Cost . '", rarity="'. $rarity . '", abilities="'. $ability . '", count="'. $count . '", power="'. $power . '", toughness="'. $toughness . '", UserID = "'. $username . '"';		
@@ -290,7 +289,7 @@ if (isset($_POST["btnSubmit"])) {
             print "<h2>Your card has "; 
 
             if (!$mailed) { 
-                echo "not "; 
+       //         echo "not "; 
             } 
 
             echo "been added to the database!</h2>"; 
@@ -377,20 +376,6 @@ if (isset($_POST["btnSubmit"])) {
             		    <input name="Colorless" value="Colorless" id="Colorless" type="checkbox" tabindex="65" >Colorless
   					</label>
 				</div>
-			<!--
-                <label id="color">Color</label>
-                <input name="Green" value="Green" id="Green" type="checkbox" tabindex="60" >
-                <i>Green</i>
-                <input name="Red" value="Red" id="Red" type="checkbox"  tabindex="61" >
-                <i>Red</i>
-                <input name="Blue" value="Blue" id="Blue" type="checkbox"  tabindex="62" >
-                <i>Blue</i>
-                <input name="White" value="White" id="White" type="checkbox"  tabindex="63" >
-                <i>White</i>
-                <input name="Black" value="Black" id="Black" type="checkbox"  tabindex="64" >  
-                <i>Black</i>    
-                <input name="Colorless" value="Colorless" id="Colorless" type="checkbox" tabindex="65" >
-                <i>Colorless</i> -->
 
             </li>
             <li>
@@ -415,16 +400,6 @@ if (isset($_POST["btnSubmit"])) {
                 <input name="rarity" value="Common" id="Common" type="radio" required tabindex="90" >Common
 				</label>
 			</div>
-            
-               <!-- <label id="rarity">Rarity</label>
-                <input name="rarity" value="Mythic" id="Mythic" type="radio" required tabindex="84" >
-                <i>Mythic</i>
-                <input name="rarity" value="Rare" id="Rare" type="radio" required tabindex="86" >
-                <i>Rare</i>
-                <input name="rarity" value="Uncommon" id="Uncommon" type="radio" required tabindex="88" >
-                <i>Uncommon</i>
-                <input name="rarity" value="Common" id="Common" type="radio" required tabindex="90" >
-                <i>Common</i>-->
             </li>
 			 <li>
                 <label id="ability">Ability:</label>
@@ -450,7 +425,7 @@ if (isset($_POST["btnSubmit"])) {
                 <input name="addToMyCards" value="yes" id="addToMyCards" type="checkbox" tabindex="160" >
                 <i>Yes</i>
         	<li>
-                <input type="submit" id="" name="btnSubmit" value="Submit Card!" class="btn btn-success btnSubmit" tabindex="169"> 
+                <input type="submit" id="" name="btnSubmit" value="Submit Card!" class="btn btn-success btnSubmit " tabindex="169"> 
             	<input type="reset" id="butReset" name="butReset" value="Reset Form" class="btn btn-warning" onclick="reSetForm()" tabindex="170">         
             </li>
         </ul>
@@ -458,5 +433,3 @@ if (isset($_POST["btnSubmit"])) {
 </form>
 <?php } //end body sumbit
 ?>
-</body>
-</html>
