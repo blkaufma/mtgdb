@@ -10,8 +10,9 @@
             SELECT 
                 id, 
                 name, 
+                email, 
                 password, 
-                email 
+                permissions
             FROM Login 
             WHERE 
                 name = :username 
@@ -37,6 +38,8 @@
         if($login_ok){  
             unset($row['password']); 
             $_SESSION['user'] = $row;
+			$_SESSION['username'] = $row['username'];
+			$_SESSION['permissions'] = $row['permissions'];
         }//end if 
 	}//end if 
 	echo json_encode(array('completed'=>($_POST['checker']),'userExists'=>$userExists,'name'=>$_POST['username'],'success'=>$login_ok)); 
